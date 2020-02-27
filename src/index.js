@@ -12,7 +12,8 @@ export default function couchdbAuthProxy(fn, opts={}) {
 		secret,
 		target="http://localhost:5984",
 		headerFields = {},
-		info = { name, version }
+		info = { name, version },
+		proxyOpts = {},
 	} = opts;
 
 	headerFields = Object.assign({
@@ -33,7 +34,7 @@ export default function couchdbAuthProxy(fn, opts={}) {
 		}
 	}) : null;
 
-	const proxy = httpProxy.createProxyServer({ target });
+	const proxy = httpProxy.createProxyServer(Object.assign(proxyOpts, { target }));
 
 	proxy.on("proxyRes", function(proxyRes, req, res) {
 		const existing = res.getHeader("Via");
